@@ -4,19 +4,25 @@ import path from 'path';
 
 export const multerPhotoUpload = (req, res, next) => {
 	try {
-		// initialize root directory
 		const __dirname = path.resolve();
-		const photoUploadFolder = path.join(__dirname, 'uploads', 'images');
+		const uploadsFolder = path.join(__dirname, 'uploads');
+		const imagesFolder = path.join(uploadsFolder, 'images');
+
+		if (!fs.existsSync(uploadsFolder)) {
+			fs.mkdirSync(uploadsFolder);
+		}
+
+		if (!fs.existsSync(imagesFolder)) {
+			fs.mkdirSync(imagesFolder);
+		}
+
 		const storage = multer.diskStorage({
 			destination: (req, file, cb) => {
-				// reate folder if it does not exist
-				if (!fs.existsSync(photoUploadFolder)) {
-					fs.mkdirSync(photoUploadFolder);
-				}
-				cb(null, photoUploadFolder);
+				cb(null, imagesFolder);
 			},
 			filename: (req, file, cb) => {
-				const fileName = file.originalname;
+				const id = req.body.id;
+				let fileName = id + path.extname(file.originalname);
 				cb(null, fileName);
 			},
 		});

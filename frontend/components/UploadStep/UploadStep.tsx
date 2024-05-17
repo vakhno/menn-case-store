@@ -11,7 +11,7 @@ import { v4 as uuid } from 'uuid';
 
 type Props = {};
 
-const page = (props: Props) => {
+const UploadStep = (props: Props) => {
 	const { toast } = useToast();
 	const router = useRouter();
 	const [isDragOver, setIsDragOver] = useState<boolean>(false);
@@ -58,6 +58,7 @@ const page = (props: Props) => {
 			}
 		});
 	};
+
 	return (
 		<div
 			className={cn(
@@ -121,4 +122,4 @@ const page = (props: Props) => {
 	);
 };
 
-export default page;
+export default UploadStep;

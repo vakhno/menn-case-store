@@ -16,6 +16,8 @@ app.use(express.json());
 app.use(cors(options));
 
 app.use('/photo', photoRouter);
+// route to serve static files form 'uploads' folder
+app.use('/uploads', express.static('uploads'));
 
 app.listen(PORT, (error) => {
 	if (error) {
