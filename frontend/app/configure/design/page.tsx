@@ -9,15 +9,12 @@ type Props = {};
 const page = (props: Props) => {
 	const searchParams = useSearchParams();
 	const [isPending, startTransition] = useTransition();
-	const [image, setImage] = useState();
+	const [image, setImage] = useState<string>();
 	useLayoutEffect(() => {
 		startTransition(async () => {
 			try {
-				const id = searchParams.get('id');
-				const result = await axios.post('http://localhost:8080/photo/is-photo-exist', { id });
-				console.log('res', result);
-				const { success, image } = result.data;
-				if (success) {
+				const image = window.localStorage.getItem('originalImage');
+				if (image) {
 					setImage(image);
 				}
 			} catch (error) {
@@ -31,11 +28,7 @@ const page = (props: Props) => {
 			{isPending ? null : (
 				<>
 					{image ? (
-						<DesignConfigurator
-							imageSrc={`${process.env.NEXT_PUBLIC_IMAGES_UPLOAD_URI}${image}`}
-							imageWidth={500}
-							imageHeight={500}
-						/>
+						<DesignConfigurator imageSrc={image} imageWidth={500} imageHeight={500} />
 					) : null}
 				</>
 			)}

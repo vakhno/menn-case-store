@@ -1,6 +1,6 @@
 'use client';
 import { Progress } from '@/components/ui/progress';
-import { cn } from '@/lib/utils';
+import { cn, getBase64 } from '@/lib/utils';
 import { Loader2, MousePointerSquareDashed, Image, Divide } from 'lucide-react';
 import React, { useState, useTransition } from 'react';
 import Dropzone, { FileRejection } from 'react-dropzone';
@@ -37,25 +37,43 @@ const page = (props: Props) => {
 				},
 			};
 			const id = uuid();
-			const file = acceptedFile[0];
-			const formData = new FormData();
-			formData.append('id', id);
-			formData.append('image', file);
-			const result = await axios.post('http://localhost:8080/photo/upload', formData, axiosConfig);
-			const { success } = result.data;
-			setIsDragOver(false);
-			if (success) {
-				setIsRedirecting(true);
+			try {
+				const file = acceptedFile[0];
+				const base64File = await getBase64(file);
+				window.localStorage.setItem('originalImage', base64File);
 				setTimeout(() => {
-					router.push(`/configure/design?id=${id}`);
+					router.push(`/configure/design`);
 				}, 2000);
-			} else {
+			} catch (error) {
 				toast({
 					title: 'Error',
 					description: `Something went wrong`,
 					variant: 'destructive',
 				});
 			}
+
+			// reader.onload = (e) => {
+			// 	console.log('e', e.target?.result);
+			// };
+			// reader.readAsDataURL(file);
+			// const formData = new FormData();
+			// formData.append('id', id);
+			// formData.append('image', file);
+			// const result = await axios.post('http://localhost:8080/photo/upload', formData, axiosConfig);
+			// const { success } = result.data;
+			// setIsDragOver(false);
+			// if (success) {
+			// 	setIsRedirecting(true);
+			// 	setTimeout(() => {
+			// 		router.push(`/configure/design?id=${id}`);
+			// 	}, 2000);
+			// } else {
+			// 	toast({
+			// 		title: 'Error',
+			// 		description: `Something went wrong`,
+			// 		variant: 'destructive',
+			// 	});
+			// }
 		});
 	};
 	return (
