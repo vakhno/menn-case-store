@@ -7,7 +7,7 @@ type Props = {};
 const Footer = (props: Props) => {
 	return (
 		<footer className="bg-white h-20 relative">
-			<MaxWidthWrapper>
+			<MaxWidthWrapper className="h-full flex justify-center">
 				<div className="border-t border-gray-200" />
 				<div className="h-full flex flex-col md:flex-row md:justify-between justify-center items-center">
 					<div className="text-center md:text-left pb-2 md:pb-0">

@@ -34,7 +34,7 @@ const ReviewColumn = ({
 	const columnRef = useRef<HTMLDivElement | null>(null);
 	const [columnHeight, setColumnHeight] = useState(0);
 	const duration = `${columnHeight * msPerPixel}ms`;
-
+	console.log('msPerPixel', msPerPixel, columnHeight, reviews);
 	useEffect(() => {
 		const cleanUp = () => {
 			resizeObserver && resizeObserver.disconnect();
@@ -54,10 +54,9 @@ const ReviewColumn = ({
 	return (
 		<div
 			ref={columnRef}
-			className={cn('animate-marquee space-y-8 py-4', className)}
+			className={cn('animate-marquee space-y-8 py-4 m-auto', className)}
 			style={{ '--marquee-duration': duration } as React.CSSProperties}>
 			{reviews.concat(reviews).map((src, index) => {
-				console.log('src', src);
 				return <Review key={index} src={src} className={reviewClassName || ''} />;
 			})}
 		</div>
@@ -77,7 +76,7 @@ const Review = ({ src, className, ...props }: Review) => {
 	return (
 		<div
 			className={cn(
-				'animate-fade-in rounded-[2.25rem] bg-white p-6 opacity-0 shadow-xl shadow-slate-900/5',
+				'animate-fade-in rounded-[2.25rem] bg-white p-6 opacity-0 shadow-xl shadow-slate-900/5 max-w-[320px]',
 				className,
 			)}
 			style={{ animationDelay: animationDelay }}
@@ -94,13 +93,13 @@ const ReviewGrid = () => {
 	return (
 		<div
 			ref={containerRef}
-			className="relative -mx-4 mt-16 grid h-[49rem] max-h-[150vh] grid-cols-1 items-start gap-8 overflow-hidden px-4 sm:mt-20 md:grid-cols-2 lg:grid-cols-3">
+			className="relative -mx-4 mt-16 grid h-[49rem] max-h-[150vh] grid-cols-1 items-start gap-8 overflow-hidden px-4 sm:mt-20 md:grid-cols-2 lg:grid-cols-3 overflow-hidden">
 			{isInView ? (
 				<>
 					{new Array(COLUMNS_MOUNT).fill('').map((_, index) => (
 						<ReviewColumn
 							key={index}
-							className="hidden md:block"
+							className="hidden block"
 							reviews={PHONES.map((phone) => ({ phone, sort: Math.random() }))
 								.sort((phoneA, phoneB) => phoneA.sort - phoneB.sort)
 								.map(({ phone }) => phone)}

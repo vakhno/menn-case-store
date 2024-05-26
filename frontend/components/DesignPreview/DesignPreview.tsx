@@ -1,3 +1,4 @@
+'use client';
 import React from 'react';
 import Phone from '../Phone/Phone';
 import { cn, formatedPrice } from '@/lib/utils';
@@ -5,13 +6,14 @@ import { ArrowRight, Check, Divide } from 'lucide-react';
 import { Button } from '../ui/button';
 import { stripe } from '@/lib/stripe';
 import { useRouter } from 'next/navigation';
-import { useKindeBrowserClient } from '@kinde-oss/kinde-auth-nextjs';
+import { Separator } from '../ui/separator';
+// import { useKindeBrowserClient } from '@kinde-oss/kinde-auth-nextjs';
 
 type Props = { imgSrc: string | null };
 
 const DesignPreview = ({ imgSrc }: Props) => {
 	const router = useRouter();
-	const { user } = useKindeBrowserClient();
+	// const { user } = useKindeBrowserClient();
 	const caseModel = JSON.parse(window.localStorage.getItem('caseModel') || 'null');
 	const caseColor = JSON.parse(window.localStorage.getItem('caseColor') || 'null');
 	const caseMaterial = JSON.parse(window.localStorage.getItem('caseMaterial') || 'null');
@@ -19,15 +21,14 @@ const DesignPreview = ({ imgSrc }: Props) => {
 	const price = caseModel.price + caseMaterial.price + caseFinish.price;
 
 	const handleApproveClick = async () => {
-		if (user) {
-			const product = stripe.products.create({
-				name: 'Custom IPhone Case',
+		if (true) {
+			const product = await stripe.products.create({
+				name: `Custom ${caseModel.label} Case`,
 				default_price_data: {
 					currency: 'USD',
-					unit_amount: price,
+					unit_amount: price * 100,
 				},
 			});
-
 			const stripeSession = await stripe.checkout.sessions.create({
 				success_url: `${process.env.NEXT_PUBLIC_ROOT}/thank-you`,
 				cancel_url: `${process.env.NEXT_PUBLIC_ROOT}/configure/preview`,
@@ -35,6 +36,7 @@ const DesignPreview = ({ imgSrc }: Props) => {
 				mode: 'payment',
 				shipping_address_collection: { allowed_countries: ['UA', 'US', 'PL'] },
 				metadata: {},
+				line_items: [{ price: product.default_price as string, quantity: 1 }],
 			});
 			const stripeSessionURL = stripeSession.url;
 			if (stripeSessionURL) {
@@ -101,7 +103,7 @@ const DesignPreview = ({ imgSrc }: Props) => {
 								</div>
 								<p className="font-medium text-gray-900">{formatedPrice(caseMaterial.price)}</p>
 							</div>
-							<div className="my-2 h-px bg-gray-200" />
+							<Separator className="my-2" />
 							<div className="flex items-center justify-between py-2">
 								<span className="font-semibold text-gray-900">Order total</span>
 								<span className="font-semibold text-gray-900">{formatedPrice(price)}</span>

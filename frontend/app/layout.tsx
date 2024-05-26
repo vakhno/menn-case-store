@@ -4,6 +4,7 @@ import './globals.css';
 import Navbar from '@/components/Navbar/Navbar';
 import Footer from '@/components/Footer/Footer';
 import { Toaster } from '@/components/ui/toaster';
+import { cn } from '@/lib/utils';
 
 const recursive = Recursive({ subsets: ['latin'] });
 
@@ -18,12 +19,12 @@ export default function RootLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-		<html lang="en">
-			<body className={recursive.className}>
-				<Navbar />
-				<main className="flex flex-col min-h-[calc(100vh-3.5rem-1px)]">
-					<div className="flex-1 flex flex-col h-full">{children}</div>
-					<Footer />
+		<html lang="en" className="h-full grid">
+			<body className={cn('h-full', recursive.className)}>
+				{/* <Navbar /> */}
+				<main className="flex flex-col h-full min-h-[calc(100vh-3.5rem-1px)]">
+					{children}
+					{/* <Footer /> */}
 				</main>
 				<Toaster />
 			</body>

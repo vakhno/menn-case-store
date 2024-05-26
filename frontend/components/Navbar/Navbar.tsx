@@ -1,16 +1,26 @@
+'use client';
 import React from 'react';
 import MaxWidthWrapper from '../MaxWidthWrapper/MaxWidthWrapper';
 import Link from 'next/link';
-import { buttonVariants } from '@/components/ui/button';
+import { Button, buttonVariants } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
-import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server';
+// import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server';
+import axios from 'axios';
 
 type Props = {};
 
-const Navbar = async (props: Props) => {
-	const { getUser } = getKindeServerSession();
-	const user = await getUser();
-	const isAdmin = user?.email === process.env.ADMIN_EMAIL;
+const Navbar = (props: Props) => {
+	// const { getUser } = getKindeServerSession();
+	// const user = await getUser();
+	// const isAdmin = user?.email === process.env.ADMIN_EMAIL;
+
+	// const handleSignIn = async () => {
+	// 	try {
+	// 		await axios.get('http://localhost:8080/auth/login', { withCredentials: true });
+	// 	} catch (error) {
+	// 		console.log('error', error);
+	// 	}
+	// };
 
 	return (
 		<nav className="sticky z-[100] h-14 inset-x-0 top-0 w-full border-b border-gray-200 bg-white/75 backdrop-blur-lg transition-all">
@@ -20,14 +30,14 @@ const Navbar = async (props: Props) => {
 						case<span className="text-green-600">cobra</span>
 					</Link>
 					<div className="h-full flex items-center space-x-4">
-						{user ? (
+						{false ? (
 							<>
 								<Link
-									href="/api/auth/logout"
+									href="/auth/logout"
 									className={buttonVariants({ size: 'sm', variant: 'ghost' })}>
 									Sign Out
 								</Link>
-								{isAdmin ? (
+								{false ? (
 									<Link
 										href="/api/auth/logout"
 										className={buttonVariants({ size: 'sm', variant: 'ghost' })}>
@@ -47,12 +57,12 @@ const Navbar = async (props: Props) => {
 						) : (
 							<>
 								<Link
-									href="/api/auth/register"
+									href="/auth/signup"
 									className={buttonVariants({ size: 'sm', variant: 'ghost' })}>
 									Sign Up
 								</Link>
 								<Link
-									href="/api/auth/login"
+									href="/auth/signin"
 									className={buttonVariants({
 										size: 'sm',
 										variant: 'ghost',

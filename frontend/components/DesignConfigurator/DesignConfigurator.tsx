@@ -17,6 +17,8 @@ import { Button } from '../ui/button';
 import { ArrowRight, Check, ChevronsUpDown } from 'lucide-react';
 import { notFound } from 'next/navigation';
 import { useRouter } from 'next/navigation';
+import { Separator } from '../ui/separator';
+
 // import { RadioGroupItem, RadioGroup as RadioG } from '../ui/radio-group';
 type Props = {
 	imageSrc: string;
@@ -92,6 +94,12 @@ const DesignConfigurator = ({ imageSrc, imageWidth, imageHeight }: Props) => {
 	};
 
 	const saveConfiguration = async () => {
+		// if user doesnt change any of field, thats mean, that they not exist in localstorage, so lets manually add this values to localstorage
+		window.localStorage.setItem('caseColor', JSON.stringify(options.color));
+		window.localStorage.setItem('caseModel', JSON.stringify(options.model));
+		window.localStorage.setItem('caseMaterial', JSON.stringify(options.material));
+		window.localStorage.setItem('caseFinish', JSON.stringify(options.finish));
+
 		if (phoneCaseRef.current && containerRef.current) {
 			try {
 				// getting coordinates and dimensions of phone canvas (space of phone case)
@@ -221,7 +229,7 @@ const DesignConfigurator = ({ imageSrc, imageWidth, imageHeight }: Props) => {
 					/>
 					<div className="px-8 pb-12 pt-8">
 						<h2 className="tracking-tight font-bold">Customize your case</h2>
-						<div className="w-full h-px bg-zinc-200 my-6" />
+						<Separator className="my-6" />
 						<div className="relative mt-4 h-full flex flex-col justify-between gap-6">
 							<RadioGroup
 								value={options.color}
@@ -274,6 +282,7 @@ const DesignConfigurator = ({ imageSrc, imageWidth, imageHeight }: Props) => {
 													},
 												)}
 												onClick={() => {
+													console.log('value', model);
 													window.localStorage.setItem('caseModel', JSON.stringify(model));
 													setOptions((prev) => ({ ...prev, model }));
 												}}>
@@ -379,7 +388,7 @@ const DesignConfigurator = ({ imageSrc, imageWidth, imageHeight }: Props) => {
 					</div>
 				</ScrollArea>
 				<div className="width-full px-8 h-16 bg-white">
-					<div className="h-px w-full bg-zinc-200" />
+					<Separator />
 					<div className="w-full h-full flex justify-end items-center">
 						<div className="w-full flex gap-6 items-center">
 							<p className="font-medium whitespace-nowrap">
