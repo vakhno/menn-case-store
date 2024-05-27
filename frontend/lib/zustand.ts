@@ -49,13 +49,13 @@ export const userStore = create<State & Actions>()((set) => ({
 		}
 	},
 	google: async () => {
-		const result = await axios.get('http://localhost:8080/auth/google');
-		const { success, user } = result.data;
-		if (success) {
-			set(() => ({
-				user,
-			}));
-		}
+		try {
+			const result = await axios.get('http://localhost:8080/auth/google');
+			const { url, success } = result.data;
+			if (success) {
+				window.location.href = url;
+			}
+		} catch (error) {}
 	},
 	logout: () => {
 		set(() => ({

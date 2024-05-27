@@ -20,12 +20,22 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang="en" className="h-full grid">
+			<head>
+				<script
+					dangerouslySetInnerHTML={{
+						__html: `	if (
+						localStorage.theme === 'dark' ||
+						(!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)
+					) {
+						document.documentElement.classList.add('dark');
+					} else {
+						document.documentElement.classList.remove('dark');
+					}`,
+					}}
+				/>
+			</head>
 			<body className={cn('h-full', recursive.className)}>
-				{/* <Navbar /> */}
-				<main className="flex flex-col h-full min-h-[calc(100vh-3.5rem-1px)]">
-					{children}
-					{/* <Footer /> */}
-				</main>
+				<main className="flex flex-col h-full min-h-[calc(100vh-3.5rem-1px)]">{children}</main>
 				<Toaster />
 			</body>
 		</html>

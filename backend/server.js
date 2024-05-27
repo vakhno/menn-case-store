@@ -14,7 +14,7 @@ const PORT = process.env.PORT || 8080;
 const app = express();
 const options = {
 	credentials: true,
-	origin: true,
+	origin: ['https://accounts.google.com', 'http://localhost:3000', 'https://people.googleapis.com'],
 };
 
 app.use(express.json());
